@@ -4,7 +4,12 @@ server:
 spring:
   application:
     name: user-service
-
+  cloud:
+    discovery:
+      enabled: true
+    openfeign:
+      circuitbreaker:
+        enabled: true
   r2dbc:
     url: ${USER_DB_URL:r2dbc:postgresql://localhost:5433/userdb}
     username: ${USER_DB_USER:postgres}
@@ -12,20 +17,12 @@ spring:
     pool:
       enabled: true
       max-size: 10
-
   flyway:
     enabled: true
     url: ${USER_DB_JDBC_URL:jdbc:postgresql://localhost:5433/userdb}
     user: ${USER_DB_USER:postgres}
     password: ${USER_DB_PASS:postgres}
     locations: classpath:db/migration
-
-  cloud:
-    discovery:
-      enabled: true
-    openfeign:
-      circuitbreaker:
-        enabled: true
 
 eureka:
   client:
