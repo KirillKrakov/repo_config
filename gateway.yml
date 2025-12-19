@@ -10,7 +10,6 @@ spring:
         locator:
           enabled: true
           lower-case-service-id: true
-      # Явно задаём маршруты для отладки
       routes:
         - id: user-service
           uri: lb://USER-SERVICE
@@ -33,7 +32,6 @@ spring:
           predicates:
             - Path=/api/v1/tags/**
 
-# Конфигурация Swagger UI для агрегации
 springdoc:
   api-docs:
     enabled: true
@@ -53,13 +51,11 @@ springdoc:
       - name: Tag Service
         url: /tag-service/v3/api-docs
     disable-swagger-default-url: true
-    # Критически важные настройки:
     path: /swagger-ui.html
     operations-sorter: method
     tags-sorter: alpha
     doc-expansion: none
     validator-url: ""
-    # Настройки для проксирования запросов:
     use-root-path: false
     query-config-enabled: true
     display-request-duration: true
@@ -68,14 +64,13 @@ eureka:
   client:
     enabled: true
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://${EUREKA_HOST:eureka}:8761/eureka
     fetch-registry: true
     register-with-eureka: true
   instance:
     prefer-ip-address: true
     instance-id: gateway:${server.port}
 
-# Включаем логирование для отладки
 logging:
   level:
     org.springframework.cloud.gateway: DEBUG
