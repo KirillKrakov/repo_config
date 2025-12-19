@@ -64,7 +64,7 @@ eureka:
   client:
     enabled: true
     service-url:
-      defaultZone: http://service-discovery:8761/eureka
+      defaultZone: http://localhost:8761/eureka
     fetch-registry: true
     register-with-eureka: true
   instance:
@@ -77,5 +77,3 @@ logging:
     org.springframework.cloud.loadbalancer: DEBUG
     com.netflix.discovery: INFO
     org.springframework.web: DEBUG
-    org.springframework.cloud.config: DEBUG
-    org.springframework.boot.context.config: DEBUG
