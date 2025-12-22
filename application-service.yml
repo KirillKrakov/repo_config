@@ -52,11 +52,6 @@ resilience4j:
         failureRateThreshold: 50
         waitDurationInOpenState: 30s
         permittedNumberOfCallsInHalfOpenState: 3
-        record-exceptions:
-          - feign.RetryableException
-          - java.net.ConnectException
-          - java.net.UnknownHostException
-          - java.io.IOException
     instances:
       user-service:
         baseConfig: default
