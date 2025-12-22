@@ -80,8 +80,6 @@ feign:
         logger-level: basic
         encoder: feign.jackson.JacksonEncoder
         decoder: feign.jackson.JacksonDecoder
-        request-interceptors:
-          - com.example.applicationservice.config.FeignClientConfig
 
 springdoc:
   api-docs:
