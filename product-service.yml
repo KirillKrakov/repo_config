@@ -86,3 +86,7 @@ logging:
   level:
     com.example: DEBUG
     org.springframework.cloud: INFO
+
+jwt:
+  secret: "3c04092ee33e6d63aeded3617cd159e3742ecb417c364106cc75efa2c18dd2eb5bf70af5"
+  expiration-ms: 3600000
