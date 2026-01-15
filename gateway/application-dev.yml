@@ -37,6 +37,10 @@ spring:
           uri: lb://TAG-SERVICE
           predicates:
             - Path=/api/v1/tags/**
+        - id: file-service
+          uri: lb://FILE-SERVICE
+          predicates:
+            - Path=/api/v1/files/**
 
 springdoc:
   api-docs:
@@ -56,6 +60,8 @@ springdoc:
         url: /assignment-service/v3/api-docs
       - name: Tag Service
         url: /tag-service/v3/api-docs
+      - name: File Service
+        url: /file-service/v3/api-docs
     disable-swagger-default-url: true
     path: /swagger-ui.html
     operations-sorter: method
