@@ -21,6 +21,17 @@ spring:
   liquibase:
     enabled: true
     change-log: classpath:db/changelog/db.changelog-master.yaml
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:kafka1:9092,kafka2:9092,kafka3:9092}
+    consumer:
+      group-id: tag-service-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+    topics:
+      tag-create-request: tag.create.request
+      tag-attach-request: tag.attach.request
   datasource:
     url: ${TAG_DB_URL:jdbc:postgresql://localhost:5437/tagdb}
     username: ${TAG_DB_USER:postgres}
