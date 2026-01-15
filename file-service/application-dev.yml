@@ -1,0 +1,92 @@
+server:
+  port: 0
+
+spring:
+  application:
+    name: file-service
+  cloud:
+    discovery:
+      enabled: true
+    openfeign:
+      circuitbreaker:
+        enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: false
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:kafka1:9092,kafka2:9092,kafka3:9092}
+    consumer:
+      group-id: file-service-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+    topics:
+      file-attach-request: file.attach.request
+  datasource:
+    url: ${FILE_DB_URL:jdbc:postgresql://localhost:5438/filedb}
+    username: ${FILE_DB_USER:postgres}
+    password: ${FILE_DB_PASS:postgres}
+    hikari:
+      maximum-pool-size: 10
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${server.port}
+
+feign:
+  client:
+    config:
+      default:
+        connect-timeout: 5000
+        read-timeout: 5000
+        logger-level: basic
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 20
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 30s
+        permittedNumberOfCallsInHalfOpenState: 3
+    instances:
+      application-service:
+        baseConfig: default
+  timelimiter:
+    configs:
+      default:
+        timeoutDuration: 2s
+    instances:
+      application-service:
+        baseConfig: default
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: false
+
+logging:
+  level:
+    com.example: DEBUG
+    org.springframework.cloud: INFO
+
+jwt:
+  secret: "3c04092ee33e6d63aeded3617cd159e3742ecb417c364106cc75efa2c18dd2eb5bf70af5"
+  expiration-ms: 3600000
